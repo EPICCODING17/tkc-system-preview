@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TKC Service ภาพรวมระบบ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#f4f4f7;--card:#fff;--card-border:#d8d8de;--ctl:#f1f1f5;
+  --tx:#1b1b20;--tx2:#33333c;--tx3:#4a4a55;--tx4:#6a6a76;--tx5:#82828e;--tx6:#96969f;
+  --w04:rgba(17,17,26,.03);--w05:rgba(17,17,26,.045);--w06:rgba(17,17,26,.08);
+  --accent:#2f80ff;--accent-soft:rgba(47,128,255,.12);
+  --green:#05be8a;--green-soft:rgba(5,190,138,.14);--red:#ef5350;--yellow:#ffa726;--purple:#745af2;--cyan:#00a8b5;
+  --warn:#9c7208;--note-bg:#fff8e6;--note-line:#f0d9a0;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+  --bg:#1c1c1e;--card:#232327;--card-border:#3f3f46;--ctl:#26262a;
+  --tx:#f2f2f5;--tx2:#dedee6;--tx3:#c3c3cc;--tx4:#9a9aa4;--tx5:#83838e;--tx6:#6c6c76;
+  --w04:rgba(255,255,255,.03);--w05:rgba(255,255,255,.05);--w06:rgba(255,255,255,.07);
+  --accent-soft:rgba(47,128,255,.18);--green-soft:rgba(5,190,138,.16);--warn:#f2c14e;--note-bg:#2a2415;--note-line:#5c4a1e}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#1c1c1e;--card:#232327;--card-border:#3f3f46;--ctl:#26262a;
+  --tx:#f2f2f5;--tx2:#dedee6;--tx3:#c3c3cc;--tx4:#9a9aa4;--tx5:#83838e;--tx6:#6c6c76;
+  --w04:rgba(255,255,255,.03);--w05:rgba(255,255,255,.05);--w06:rgba(255,255,255,.07);
+  --accent-soft:rgba(47,128,255,.18);--green-soft:rgba(5,190,138,.16);--warn:#f2c14e;--note-bg:#2a2415;--note-line:#5c4a1e}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:'Prompt',system-ui,sans-serif;font-size:14px;line-height:1.65;padding:20px 16px 64px}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+.shell{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:250px minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:960px){.shell{grid-template-columns:1fr}}
+
+/* toc */
+.toc{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto;background:var(--card);border:2px solid var(--card-border);border-radius:12px;padding:16px 12px}
+@media (max-width:960px){.toc{position:static;max-height:none}}
+.brand{display:flex;gap:10px;align-items:center;margin-bottom:12px;padding:0 4px}
+.brand i{width:36px;height:36px;border-radius:10px;background:var(--accent);color:#fff;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:12px;flex:none}
+.brand b{display:block;font-size:14px;line-height:1.2}
+.brand span{font-size:11px;color:var(--tx5)}
+.toc .grp{font-size:10px;letter-spacing:.09em;color:var(--tx6);font-weight:500;margin:12px 6px 4px}
+.toc a{display:flex;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;font-size:12.5px;color:var(--tx3);text-decoration:none}
+.toc a:hover{background:var(--w05);color:var(--tx)}
+.toc a .n{font-size:10.5px;color:var(--tx6);min-width:18px;font-variant-numeric:tabular-nums}
+.toc .sub a{padding-left:34px;font-size:12px;color:var(--tx4)}
+
+/* blocks */
+.content{display:flex;flex-direction:column;gap:22px;min-width:0}
+.block{background:var(--card);border:2px solid var(--card-border);border-radius:12px;padding:24px}
+.eyebrow{font-size:10.5px;letter-spacing:.09em;color:var(--tx6);font-weight:500}
+h1{font-size:26px;margin:2px 0 6px;line-height:1.3;text-wrap:balance}
+h2{font-size:20px;margin:2px 0 6px;line-height:1.35;text-wrap:balance}
+h3{font-size:16px;margin:0;line-height:1.4}
+.lead{color:var(--tx3);max-width:72ch;margin:0}
+.muted{color:var(--tx5)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:18px}
+.stat{border:2px dashed color-mix(in srgb,var(--c) 45%,transparent);background:color-mix(in srgb,var(--c) 6%,var(--card));border-radius:12px;padding:12px 14px}
+.stat b{display:block;font-size:24px;line-height:1.15}
+.stat span{font-size:12px;color:var(--tx4)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-size:12px;color:var(--tx4)}
+.meta b{color:var(--tx2);font-weight:600}
+
+/* modules */
+.mods{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:16px}
+.mod{border:1px solid var(--w06);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px;text-decoration:none;color:inherit;position:relative;overflow:hidden}
+.mod:hover{outline:2px dashed var(--accent);outline-offset:-2px}
+.mod .bar{position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c)}
+.mod h3{display:flex;justify-content:space-between;gap:8px;padding-left:4px}
+.mod h3 small{font-size:11px;color:var(--tx5);font-weight:500;white-space:nowrap}
+.mod p{margin:0;font-size:12.5px;color:var(--tx3);padding-left:4px}
+
+/* flows */
+.flow{margin-top:18px;border:1px solid var(--w06);border-radius:12px;padding:14px}
+.flow h3{margin-bottom:10px;display:flex;gap:8px;align-items:center}
+.flow h3 i{width:10px;height:10px;border-radius:3px;background:var(--c);display:block}
+.chain{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px}
+.node{display:flex;flex-direction:column;gap:2px;min-width:120px;max-width:190px;flex:1 1 140px;padding:9px 11px;border-radius:10px;border:2px solid color-mix(in srgb,var(--c) 40%,transparent);background:color-mix(in srgb,var(--c) 6%,var(--card));text-decoration:none;color:inherit}
+.node:hover{border-color:var(--c)}
+.node b{font-size:12.5px;font-weight:600;line-height:1.3}
+.node span{font-size:11px;color:var(--tx4);line-height:1.4}
+.arr{display:flex;align-items:center;color:var(--tx6);font-size:16px}
+.side{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;font-size:11.5px;color:var(--tx4)}
+.side span{border:1px dashed var(--w06);border-radius:8px;padding:3px 9px}
+
+/* page cards */
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.pages{display:flex;flex-direction:column;gap:16px;margin-top:16px}
+.pg{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:18px;border:1px solid var(--w06);border-radius:12px;padding:14px;scroll-margin-top:16px}
+@media (max-width:760px){.pg{grid-template-columns:1fr}}
+.thumb{position:relative;display:block;border-radius:9px;overflow:hidden;border:1px solid var(--card-border);background:var(--ctl);aspect-ratio:16/10;cursor:zoom-in;padding:0;width:100%}
+.thumb img{width:100%;height:100%;object-fit:cover;object-position:top left;display:block}
+.thumb .zoom{position:absolute;right:8px;bottom:8px;font-size:10.5px;background:rgba(0,0,0,.6);color:#fff;padding:2px 8px;border-radius:6px}
+.pg .head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.pg .path{font-size:11px;color:var(--tx6)}
+.pg .who{display:inline-flex;font-size:10.5px;font-weight:600;padding:1px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
+.pg ul{margin:8px 0 0;padding-left:18px;font-size:13px;color:var(--tx2)}
+.pg ul li{margin:2px 0}
+.links{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:11.5px}
+.links .lb{color:var(--tx5);margin-right:2px}
+.links a{display:inline-flex;align-items:center;height:24px;padding:0 9px;border-radius:7px;border:1px solid var(--w06);background:var(--ctl);color:var(--tx3);text-decoration:none}
+.links a:hover{border-color:var(--accent);color:var(--accent)}
+.extra{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px}
+.extra button{display:flex;flex-direction:column;gap:3px;width:150px;border:1px solid var(--w06);border-radius:9px;padding:5px;background:var(--card);cursor:zoom-in;text-align:left}
+.extra button img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top left;border-radius:6px;display:block}
+.extra button span{font-size:11px;color:var(--tx4);padding:0 2px}
+
+/* compact grid (reports, master data) */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:14px}
+.gi{border:1px solid var(--w06);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px;scroll-margin-top:16px}
+.gi .thumb{aspect-ratio:16/10}
+.gi b{font-size:12.5px;line-height:1.35}
+.gi span{font-size:11.5px;color:var(--tx4);line-height:1.45}
+.subhead{margin-top:20px;font-size:13px;font-weight:600;color:var(--tx2);display:flex;gap:8px;align-items:center}
+.subhead i{width:9px;height:9px;border-radius:3px;background:var(--c);display:block}
+
+/* documents */
+.docs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:16px}
+.doc{border:1px solid var(--w06);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.doc .thumb{aspect-ratio:1/1.1;object-position:top}
+.doc .thumb img{object-position:top center}
+.doc ul{margin:0;padding-left:18px;font-size:12.5px;color:var(--tx3)}
+.pdf{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:9px;background:var(--green);color:#fff;text-decoration:none;font-size:12.5px;font-weight:600;width:fit-content}
+.pdf:hover{filter:brightness(1.08)}
+
+/* tables */
+.tbl{border:1px solid var(--w06);border-radius:10px;overflow-x:auto;margin-top:14px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{background:var(--w05);text-align:left;font-size:10.5px;letter-spacing:.06em;color:var(--tx5);font-weight:500;padding:9px 12px;border-bottom:1px solid var(--w06);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--w06);vertical-align:top}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-flex;padding:1px 9px;border-radius:99px;font-size:11px;font-weight:600;white-space:nowrap}
+
+.note{margin-top:14px;padding:11px 14px;border-radius:10px;border:1.5px dashed var(--note-line);background:var(--note-bg);font-size:12.5px;color:var(--tx2)}
+
+/* lightbox */
+.lb-wrap{position:fixed;inset:0;background:rgba(10,10,14,.82);z-index:50;display:flex;flex-direction:column;align-items:center;padding:20px;overflow:auto}
+.lb-wrap[hidden]{display:none}
+.lb-bar{width:min(1440px,100%);display:flex;justify-content:space-between;align-items:center;gap:12px;color:#fff;margin-bottom:10px;font-size:13px}
+.lb-bar button{width:34px;height:34px;border-radius:9px;border:0;background:var(--red);color:#fff;font-size:18px;cursor:pointer;flex:none}
+.lb-wrap img{width:min(1440px,100%);height:auto;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+
+@media print{
+  body{background:#fff;padding:0}
+  .toc,.thumb .zoom,.lb-wrap{display:none!important}
+  .shell{display:block}
+  .block{border:0;padding:0 0 18px;break-inside:auto}
+  .pg,.gi,.doc,.flow,.mod{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="toc" aria-label="สารบัญ">
+    <div class="brand"><i>TKC</i><span><b>TKC Service</b><span>ภาพรวมการทำงานของระบบ</span></span></div>
+    <div id="toc"></div>
+  </nav>
+
+  <main class="content">
+    <section class="block" id="top">
+      <div class="eyebrow">เอกสารสรุปงานส่งมอบ · ฉบับร่าง</div>
+      <h1>TKC Service ระบบบริหารงานบริการรวมศูนย์</h1>
+      <p class="lead">เอกสารนี้สรุปว่าระบบที่พัฒนาแล้วมีหน้าอะไรบ้าง แต่ละหน้าทำอะไรได้ และเชื่อมต่อกันอย่างไร ตั้งแต่รับแจ้งงานซ่อม มอบหมายช่าง บันทึกผลหน้างาน ไปจนถึงพิมพ์ใบงานให้ลูกค้าเซ็น ขออนุมัติค่าใช้จ่าย จองรถ ลงเวลา ลา OT และรายงานสำหรับผู้บริหาร ภาพทุกภาพเป็นหน้าจอจริงของระบบ กดที่ภาพเพื่อดูขนาดเต็ม</p>
+      <div class="stats" id="stats"></div>
+      <div class="meta"><span>วันที่จัดทำ <b>4 ตุลาคม 2569</b></span><span>เวอร์ชันระบบ <b>main 4221b73</b></span><span>ภาพหน้าจอจาก <b>ข้อมูลทดสอบ (dev)</b></span><span>ทดสอบอัตโนมัติ <b>124 ชุด ผ่านทั้งหมด</b></span></div>
+    </section>
+
+    <section class="block" id="modules">
+      <div class="eyebrow">ส่วนที่ 1</div>
+      <h2>ระบบประกอบด้วยอะไรบ้าง</h2>
+      <p class="lead">ระบบแบ่งเป็นหมวดตามเมนูด้านซ้าย พนักงานแต่ละตำแหน่งเห็นเมนูตามสิทธิ์ของตัวเอง กดการ์ดเพื่อไปที่รายละเอียดของหมวดนั้น</p>
+      <div class="mods" id="mods"></div>
+    </section>
+
+    <section class="block" id="flows">
+      <div class="eyebrow">ส่วนที่ 2</div>
+      <h2>การทำงานเชื่อมกันอย่างไร</h2>
+      <p class="lead">ขั้นตอนหลักของงานแต่ละเรื่อง แต่ละกล่องคือหน้าหนึ่งในระบบ กดกล่องเพื่อดูหน้านั้น ข้อมูลไหลต่อกันเองโดยไม่ต้องกรอกซ้ำ เช่น ใบงานผูกกับลูกค้าและเครื่องจักร การจองรถและใบเบิกอ้างอิงเลขใบงานได้</p>
+      <div id="flowlist"></div>
+    </section>
+
+    <div id="sections"></div>
+
+    <section class="block" id="docs">
+      <div class="eyebrow">ส่วนที่ 4</div>
+      <h2>เอกสารที่พิมพ์จากระบบ</h2>
+      <p class="lead">เอกสาร 2 ชนิดพิมพ์จากระบบได้โดยตรงเป็นกระดาษ A4 หรือบันทึกเป็น PDF หัวกระดาษ (โลโก้ ชื่อบริษัท ที่อยู่ เลขผู้เสียภาษี) ตั้งได้ที่หน้าตั้งค่าระบบ ลายเซ็นที่พิมพ์ออกมาเป็นลายเซ็นจริงที่บันทึกไว้ตอนลงนามในระบบ</p>
+      <div class="docs" id="doclist"></div>
+      <div class="note">ใบงานตัวอย่างในภาพยังไม่มีโลโก้และข้อมูลบริษัท เพราะยังไม่ได้กรอกในหน้าตั้งค่าระบบ เมื่อกรอกแล้วจะแสดงบนหัวกระดาษทุกใบโดยอัตโนมัติ</div>
+    </section>
+
+    <section class="block" id="roles">
+      <div class="eyebrow">ส่วนที่ 5</div>
+      <h2>สิทธิ์ผู้ใช้งาน และขั้นตอนอนุมัติ</h2>
+      <p class="lead">ระบบมีตำแหน่งตั้งต้น 7 ตำแหน่ง ผู้ดูแลระบบปรับสิทธิ์ของแต่ละตำแหน่งได้เองที่หน้า Role และ Permission ส่วนขั้นตอนอนุมัติของเอกสาร 5 ชนิดปรับจำนวนขั้นและผู้อนุมัติได้ที่หมวดขั้นตอนอนุมัติ</p>
+      <div class="tbl"><table><thead><tr><th>ตำแหน่ง</th><th>เห็นข้อมูล</th><th>ทำอะไรได้</th></tr></thead><tbody id="roletbl"></tbody></table></div>
+      <div class="tbl"><table><thead><tr><th>เอกสาร</th><th>ขั้นตอนอนุมัติตั้งต้น</th><th>เมื่ออนุมัติครบ</th></tr></thead><tbody id="flowtbl"></tbody></table></div>
+      <div class="note">ทุกเอกสารมีกฎเดียวกัน: ไม่มีใครอนุมัติเอกสารของตัวเองได้ ผู้อนุมัติแต่ละขั้นเห็นงานที่ <b>กล่องอนุมัติ</b> พร้อมข้อมูลประกอบการตัดสินใจ เช่น วันลาคงเหลือก่อนและหลัง ชั่วโมง OT สะสมของเดือน การจองรถที่ชนกัน และลายเซ็นของผู้อนุมัติจะถูกบันทึกไว้พิมพ์ลงเอกสาร</div>
+    </section>
+
+    <section class="block" id="notify">
+      <div class="eyebrow">ส่วนที่ 6</div>
+      <h2>การแจ้งเตือน</h2>
+      <p class="lead">ตัวเลขข้างเมนูบอกว่ามีอะไรรอให้ทำ สีแดงคือเรื่องที่ต้องจัดการ สีเหลืองคือคำขอของเราที่ยังรออนุมัติ และกระดิ่งมุมขวาบนแจ้งเหตุการณ์สำคัญ ระบบส่งสรุปอัตโนมัติทุกเช้า 08:00 น.</p>
+      <div class="tbl"><table><thead><tr><th>แจ้งเตือน</th><th>ใครได้รับ</th><th>กดแล้วไปที่</th></tr></thead><tbody id="notitbl"></tbody></table></div>
+    </section>
+  </main>
+</div>
+
+<div class="lb-wrap" id="lb" hidden role="dialog" aria-modal="true" aria-label="ภาพขนาดเต็ม">
+  <div class="lb-bar"><span id="lbcap"></span><button type="button" id="lbx" aria-label="ปิด">×</button></div>
+  <img id="lbimg" alt="">
+</div>
+
+<script>
+const I = n => 'img/' + n + '.jpg';
+/* ---------- modules ---------- */
+const MODS = [
+ ['s-work','งานบริการ','var(--accent)','ใบงานซ่อม ลูกค้าและเครื่องจักร แจ้งเตือน PM บอร์ดช่าง และงานของช่างแต่ละคน'],
+ ['s-time','ลงเวลาและการลา','var(--green)','ลงเวลาด้วยรูปถ่ายและพิกัด GPS ขอแก้ไขเวลา ขอลา ขอ OT พร้อมปฏิทินของตัวเอง'],
+ ['s-car','จองรถ','var(--yellow)','บอร์ดสถานะรถทุกคัน จองรถ รับ-คืนรถพร้อมเลขไมล์ ทะเบียนรถ ต่ออายุภาษี ประกัน เติมน้ำมัน ซ่อมบำรุง'],
+ ['s-exp','ขออนุมัติค่าใช้จ่าย','var(--purple)','ยื่นขออนุมัติ อนุมัติ 2 ขั้น เงินสำรองจ่ายและการเคลียร์เงิน พิมพ์ใบขออนุมัติ'],
+ ['s-hr','งานบุคคล (HR)','var(--cyan)','กำหนดสิทธิ์วันลาทั้งบริษัท และบันทึกลา / OT / แก้เวลาแทนพนักงาน'],
+ ['s-rep','รายงาน','var(--red)','รายงาน 18 ฉบับแยกเป็นหน้า ทุกฉบับส่งออก Excel ได้ทั้งรายเดือนและทั้งปี'],
+ ['s-lib','ข้อมูลหลักและขั้นตอนอนุมัติ','var(--tx5)','ตารางข้อมูลตั้งต้น 35 ตาราง และตั้งขั้นตอนอนุมัติของเอกสาร 5 ชนิด'],
+ ['s-sys','ผู้ใช้งานและตั้งค่าระบบ','var(--tx4)','ผู้ใช้งาน สิทธิ์ตามตำแหน่ง ลายเซ็น Audit Log การแจ้งเตือน ตั้งค่าบริษัทและเวลาทำงาน'],
+];
+
+/* ---------- pages: [id, name, path, img, who, does[], links[[label,id]], extra[[img,caption]]] ---------- */
+const S = [
+ {id:'s-work', n:'3.1', t:'งานบริการ', c:'var(--accent)', intro:'หัวใจของระบบ ตั้งแต่ลูกค้าโทรแจ้ง เปิดใบงาน มอบหมายช่าง ช่างบันทึกผลหน้างานพร้อมรูปและลายเซ็นลูกค้า หัวหน้ารีวิวปิดงาน จนพิมพ์ใบงาน', pages:[
+  ['p-dash','แดชบอร์ดงานบริการ','/dashboard','00-dashboard','ผู้จัดการ / HR / ผู้บริหาร',['การ์ดสรุป: ใบงานทั้งหมด เปิดค้าง งานด่วน ค้างเกิน 30 วัน งานแก้ไขจุดเดิม ไม่อัพเดทสถานะ','ตารางภาพรวมรายสาขา: จำนวนใบงาน ช่าง งานต่อช่าง อายุงานค้าง อัตราซ่อมซ้ำ กดสาขาเพื่อดูงานที่ค้างนานสุด','กราฟงานเปิดใหม่ / ปิดแล้ว สาเหตุงานค้าง สัดส่วนประเภทงาน จุดที่เสียบ่อย','เลือกช่วงเวลา (3/6/12 เดือน ตั้งแต่ต้นปี) สาขา และประเภทงาน'],[['ใบงาน','p-jobs'],['รายละเอียดใบงาน','p-job']]],
+  ['p-inbox','กล่องอนุมัติ','/approvals','01-approvals','ผู้อนุมัติทุกระดับ',['รวมทุกเรื่องที่รอเราอนุมัติไว้ที่เดียว: จองรถ ใบลา OT แก้ไขเวลา ค่าใช้จ่าย','แต่ละการ์ดมีข้อมูลประกอบ: วันลาคงเหลือก่อน/หลัง OT สะสมเดือนนี้ การจองที่ชนกัน ไฟล์แนบ','อนุมัติ / ไม่อนุมัติ (ต้องใส่เหตุผล) / ขอข้อมูลเพิ่ม (ค่าใช้จ่าย)','แท็บ "ตัดสินแล้ว" ดูย้อนหลัง 60 รายการ ค้นหาและกรองตามประเภท'],[['ใบขออนุมัติค่าใช้จ่าย','p-exp']]],
+  ['p-myjobs','งานของฉัน','/my-jobs','my-jobs','ช่าง',['หน้าหลักของช่าง ออกแบบให้ใช้บนมือถือ','งานที่ต้องทำ เรียง: ถูกส่งกลับให้แก้ → นัดวันนี้ → งานอื่น','แท็บรอรีวิว และปิดแล้ว'],[['รายละเอียดใบงาน','p-job'],['บันทึกผลหน้างาน','p-job']]],
+  ['p-jobs','ใบงาน (รายการ)','/job-orders','03-job-orders','ผู้จัดการ / แอดมิน',['ใบงานทั้งหมด ค้นหาด้วยเลขใบงานหรือชื่อลูกค้า','กรองงานด่วน / สูงที่ยังเปิด และงานรอรีวิว','แต่ละแถวมีความเร่งด่วน อาการ วันนัด (เลยนัดเป็นสีแดง) สถานะ อายุงาน ช่างที่รับผิดชอบ','เปิดใบงานใหม่ (เลือกลูกค้า) แก้ไข ลบ'],[['เปิดใบงาน','p-job'],['รายละเอียดใบงาน','p-job']]],
+  ['p-job','ใบงาน (รายละเอียด / เปิด / บันทึกผล)','/job-orders/{เลขที่}','job-show','ทุกคนที่เกี่ยวข้อง',['แถบความคืบหน้า: รับแจ้ง → มอบหมายช่าง → เข้าหน้างาน → บันทึกผล → ลูกค้าเซ็นรับ → หัวหน้ารีวิว → ปิดงาน','ข้อมูลลูกค้า เครื่องจักร (สถานะประกัน รอบ PM) ทีมงาน อาการ สาเหตุ วิธีแก้ การป้องกัน อะไหล่ที่ใช้พร้อมราคา','รูปก่อนทำ / หลังทำ ไฟล์แนบ ลายเซ็นลูกค้า ประวัติสถานะ รถที่จองไปหน้างาน','ช่างบันทึกผล: เวลาเริ่ม-เสร็จ เลขไมล์ ชั่วโมงเครื่อง อะไหล่ รูป ลายเซ็นลูกค้าบนหน้าจอ เลือกจากคลังความรู้ปัญหาแล้วกรอกให้อัตโนมัติ แล้วกดส่งงาน','หัวหน้ารีวิว: ผ่าน (ปิดงาน) หรือส่งกลับพร้อมเหตุผล ช่างได้รับแจ้งเตือนทันที','พิมพ์ใบงาน 3 ฉบับ จองรถสำหรับใบงานนี้'],[['ลูกค้า','p-cust'],['สมุดประวัติเครื่องจักร','p-cust'],['แจ้งเตือน PM','p-pm'],['จองรถ','p-book'],['พิมพ์ใบงาน','docs']],[['job-create','ฟอร์มเปิดใบงาน'],['job-perform','บันทึกผลหน้างาน'],['job-edit','แก้ไขใบงาน']]],
+  ['p-cust','ลูกค้าและเครื่องจักร','/customers','04-customers','ผู้จัดการ / แอดมิน / เซลส์',['รายชื่อลูกค้า กรอง: มีใบงานเปิดอยู่ / ควรติดต่อกลับ (ไม่มีงานเกิน 1 ปี) / ข้อมูลยังไม่ครบ','หน้าลูกค้า: ข้อมูลติดต่อ เกรด เครดิต เซลส์ผู้ดูแล เครื่องจักรทั้งหมด ใบงานทั้งหมด ยอดขายรายปี ประวัติการโทร','สมุดประวัติเครื่องจักร: ประกัน รอบ PM ถัดไป กราฟชั่วโมงเครื่อง ประวัติงาน อะไหล่ที่เคยเปลี่ยน ประวัติเจ้าของ','เพิ่ม / แก้ไขลูกค้าและเครื่องจักร ย้ายเจ้าของเครื่อง สถานะลูกค้าบางสถานะห้ามเปิดใบงาน'],[['เปิดใบงาน','p-job'],['แจ้งเตือน PM','p-pm']],[['customer-show','หน้าลูกค้า'],['machine-show','สมุดประวัติเครื่องจักร']]],
+  ['p-pm','แจ้งเตือน PM','/pm','05-pm','ผู้จัดการ / เซลส์',['คำนวณรอบเช็กระยะถัดไปของเครื่องทุกคันให้อัตโนมัติจากชั่วโมงเครื่องล่าสุดและอัตราการใช้งาน','กรอง: เลยรอบแล้ว / ถึงรอบใน 7 วัน / 30 วัน / นัดเข้าแล้ว / ข้อมูลไม่พอ ตามสาขา ประเภทเครื่อง ลูกค้าของฉัน','บันทึกการโทร: นัดได้แล้ว / ขอเลื่อน / ติดต่อไม่ได้ / ไม่ต้องการ PM (พร้อมเหตุผล)','นัดได้แล้วเปิดใบงาน PM ต่อได้ทันทีโดยกรอกข้อมูลให้ล่วงหน้า'],[['ลูกค้า','p-cust'],['เปิดใบงาน','p-job']]],
+  ['p-board','บอร์ดช่าง','/tech-board','06-tech-board','ผู้จัดการ / ผู้รีวิว',['ปฏิทินรายเดือนของช่างทุกคน: ว่าง / มีงาน / ลา รวมวันหยุด','การ์ดช่างพร้อมรูปโปรไฟล์ กดเพื่อดูเฉพาะคนนั้น และรายชื่อคนที่ว่างในแต่ละวัน','กรองสาขา ความชำนาญ ค้นชื่อ รายการงานที่ยังไม่มีช่าง','มอบงาน: เลือกใบงาน ช่าง วันเวลา ช่างได้รับแจ้งเตือนทันที'],[['รายละเอียดใบงาน','p-job']]],
+ ]},
+ {id:'s-time', n:'3.2', t:'ลงเวลาและการลา', c:'var(--green)', intro:'พนักงานทุกคนใช้ ลงเวลาได้จากปุ่มบนแถบด้านบนทุกหน้า คำขอทุกชนิดเข้ากล่องอนุมัติของหัวหน้า', pages:[
+  ['p-clock','ลงเวลาเข้า-ออกงาน (ปุ่มบนแถบด้านบน)','ทุกหน้า','clock-modal','พนักงานทุกคน',['กดเข้างาน / ออกงาน ระบบอ่านพิกัด GPS แล้วหาสาขาหรือจุดปฏิบัติงานที่ใกล้ที่สุด','อยู่นอกรัศมีต้องพิมพ์ชื่อสถานที่ และถูกนับเป็น "นอกพื้นที่" ในรายงานหัวหน้า','บังคับถ่ายรูปยืนยันตัวตนด้วยกล้องหน้า ประทับเวลาและพิกัดบนรูป เลือกรูปจากเครื่องได้แต่จะถูกตั้งข้อสังเกต'],[['ลงเวลาของฉัน','p-att']]],
+  ['p-att','ลงเวลาของฉัน','/attendance','07-attendance','พนักงานทุกคน',['ปฏิทินรายเดือน สถานะรายวัน: ปกติ นอกสถานที่ ลืมลงเวลาออก ลา วันหยุด ไม่พบการลงเวลา','กดวันเพื่อดูเวลาเข้า-ออก รูป สถานที่ ระยะห่าง ชั่วโมงทำงาน ลาและ OT ของวันนั้น','ขอแก้ไขเวลาของวันนั้นได้ทันที'],[['ขอแก้ไขเวลา','p-corr']]],
+  ['p-corr','ขอแก้ไขเวลา','/attendance-corrections','08-attendance-corrections','พนักงานทุกคน',['ปฏิทินคำขอ และรายการวันที่ยังต้องแก้ (วันที่ลืมลงเวลา)','ยื่นแก้เวลาเข้า และ/หรือออก ย้อนหลังได้ 30 วัน ใส่เหตุผล แนบไฟล์','อนุมัติแล้วระบบแก้เวลาในประวัติให้อัตโนมัติ'],[['กล่องอนุมัติ','p-inbox']],[['correction-create','ฟอร์มขอแก้ไขเวลา']]],
+  ['p-leave','ใบลาของฉัน','/leave-requests','09-leave-requests','พนักงานทุกคน',['การ์ดสิทธิ์วันลาแต่ละประเภท: สิทธิ์ปีนี้ ยกมา ใช้ไป รออนุมัติ','ปฏิทินใบลา กดดูขั้นตอนอนุมัติ ยื่นใหม่จากใบที่ไม่อนุมัติได้','ยื่นลาเต็มวัน / ครึ่งวัน ไม่นับเสาร์-อาทิตย์และวันหยุดบริษัท แนบไฟล์ (บังคับได้ตามประเภทลา)','อนุมัติแล้วตัดวันลาให้อัตโนมัติ'],[['กล่องอนุมัติ','p-inbox']],[['leave-create','ฟอร์มขอลา']]],
+  ['p-ot','OT ของฉัน','/ot-requests','10-ot-requests','พนักงานทุกคน',['ปฏิทินและรายการ OT','ยื่น OT: วันที่ เวลาเริ่ม-สิ้นสุด จำนวนชั่วโมง ผูกกับใบงานได้ เหตุผล','หัวหน้าเห็นว่าตรงกับเวลาออกงานจริงไหม และ OT สะสมของเดือน'],[['กล่องอนุมัติ','p-inbox'],['ใบงาน','p-job']],[['ot-create','ฟอร์มขอ OT']]],
+ ]},
+ {id:'s-car', n:'3.3', t:'จองรถ', c:'var(--yellow)', intro:'ดูว่ารถคันไหนว่าง จองรถไปหน้างาน (บางวัตถุประสงค์บังคับผูกใบงาน) รับรถและคืนรถพร้อมเลขไมล์ และดูแลเอกสารของรถทุกคัน', pages:[
+  ['p-carboard','บอร์ดจองรถ','/car-bookings','11-car-bookings','พนักงาน / ผู้จัดการ',['รถทุกคันในตารางเดียว: รูป ทะเบียน สถานะตอนนี้ (ว่าง / รออนุมัติ / ใช้งาน / ซ่อมบำรุง) การจองปัจจุบันและถัดไป','ป้ายเตือนเอกสารใกล้หมดอายุ','กดจองหรือดูรายละเอียดได้จากแถว'],[['จองรถ','p-book'],['ทะเบียนรถ','p-cars']]],
+  ['p-book','การจองรถ (จอง / รับรถ / คืนรถ)','/car-bookings/{เลขที่}','booking-show','พนักงาน / ผู้จัดการ',['จอง: เลือกรถ (เห็นรูป เลขไมล์ เอกสาร) ช่วงเวลา วัตถุประสงค์ ปลายทาง ผู้ร่วมเดินทาง ระบบเช็กรถว่างทันที','วัตถุประสงค์งานซ่อมบังคับเลือกใบงานที่ยังเปิดของสาขานั้น','รายละเอียด: ขั้นตอนอนุมัติ QR code เปิดหน้านี้บนมือถือ','รับรถใส่เลขไมล์ออก คืนรถใส่เลขไมล์เข้า (ต้องมากกว่าตอนรับ)'],[['ใบงาน','p-job'],['กล่องอนุมัติ','p-inbox']],[['booking-create','ฟอร์มจองรถ']]],
+  ['p-cars','ทะเบียนรถ','/service-cars','12-service-cars','ผู้จัดการ / แอดมิน',['รถทุกคัน กรอง: เอกสารหมดอายุ / ใกล้ครบ / ถึงรอบเช็กระยะ / ข้อมูลไม่ครบ','ข้อมูลรถ: รถบริษัท / เช่า / รถพนักงาน ราคาซื้อ ภาษี พ.ร.บ. ประกัน GPS รูปรถ ย้ายสาขา','หน้ารถ: ต่ออายุภาษี / พ.ร.บ. / ประกัน บันทึกเติมน้ำมัน (คำนวณ กม./ลิตร) บันทึกซ่อมบำรุง ประวัติการจอง ค่าใช้จ่ายปีนี้'],[['จองรถคันนี้','p-book']],[['car-show','หน้ารถ']]],
+ ]},
+ {id:'s-exp', n:'3.4', t:'ขออนุมัติค่าใช้จ่าย', c:'var(--purple)', intro:'แทนใบขออนุมัติกระดาษ ยื่นจากมือถือได้ อนุมัติ 2 ขั้น (ผู้จัดการสาขา → ผู้บริหาร) พิมพ์ใบที่อนุมัติแล้วพร้อมลายเซ็น และติดตามการเคลียร์เงินสำรองจ่าย', pages:[
+  ['p-exp','ขออนุมัติค่าใช้จ่าย','/expense-requests','expense-all','พนักงานทุกคน / ผู้อนุมัติ',['รายการใบของฉัน หรือทั้งหมด (ผู้มีสิทธิ์) การ์ดสถานะ: ร่าง รออนุมัติ ขอข้อมูลเพิ่ม อนุมัติแล้ว ไม่อนุมัติ เงินสำรองรอเคลียร์','ยื่นใบ: เพื่อสาขา / ทีม วัตถุประสงค์ จำนวนเงิน วันที่ต้องใช้ เงินสำรองจ่าย (ผู้รับเงิน วันกำหนดเคลียร์) เอกสารอ้างอิง ผูกใบงาน แนบไฟล์ 3 ไฟล์','บันทึกร่างได้ ทำสำเนาจากใบเดิมได้ ยกเลิกได้ก่อนมีคนอนุมัติ','ผู้อนุมัติ: อนุมัติ / ขอข้อมูลเพิ่ม / ไม่อนุมัติ จากหน้ารายละเอียดได้เลย','บันทึกเคลียร์เงินสำรอง และพิมพ์ / ดาวน์โหลด PDF เมื่ออนุมัติแล้ว'],[['กล่องอนุมัติ','p-inbox'],['ใบงาน','p-job'],['พิมพ์ใบขออนุมัติ','docs']],[['expense-create','ฟอร์มยื่นขออนุมัติ'],['expense-show','รายละเอียดใบ']]],
+ ]},
+ {id:'s-hr', n:'3.5', t:'งานบุคคล (HR)', c:'var(--cyan)', intro:'สำหรับฝ่ายบุคคล', pages:[
+  ['p-bal','สิทธิ์วันลา','/leave-balances','14-leave-balances','HR',['ตารางพนักงาน × ประเภทลา กรองปี สาขา คนที่ยังไม่มีสิทธิ์ / ใกล้หมด','แก้สิทธิ์รายคน กำหนดสิทธิ์ให้หลายคนพร้อมกัน','สร้างสิทธิ์ปีใหม่ ยกยอดตามเพดานของแต่ละประเภท ทุกการแก้ไขบันทึกประวัติ'],[]],
+  ['p-behalf','บันทึกแทนพนักงาน','/on-behalf','15-on-behalf','HR',['เลือกพนักงาน แล้วบันทึกลา / OT / แก้ไขเวลาแทน มีผลทันทีไม่ต้องรออนุมัติ','เห็นสิทธิ์วันลาคงเหลือ การลงเวลา 7 วันล่าสุด OT และวันที่ลืมลงเวลาออกของคนนั้น'],[['สิทธิ์วันลา','p-bal']],[['on-behalf-person','หน้าบันทึกแทนรายคน']]],
+ ]},
+];
+
+/* reports and master data: compact cards [img, name, what] */
+const REP = [
+ ['งานบุคคล','var(--green)',[['16-reports-hr-attendance','สรุปการลงเวลา','ตารางคน × วัน มาทำงาน มาสาย ขาดงาน ลา นอกพื้นที่ เวลาเข้า-ออกเฉลี่ย'],['17-reports-hr-leave','วันลา','วันลาต่อคนต่อประเภท สีตามสิทธิ์คงเหลือ'],['18-reports-hr-ot','ชั่วโมง OT','ชั่วโมง OT รายวัน เพดานรายสัปดาห์ตามกฎหมาย'],['19-reports-hr-offsite','นอกพื้นที่ / ผิดปกติ','ลงเวลานอกรัศมี หรือใช้รูปจากเครื่อง พร้อมรูปและระยะ'],['20-reports-hr-avg-hours','ชั่วโมงทำงานเฉลี่ย','ชั่วโมงทำงานต่อวันหักพักเที่ยง ทำงานเกิน / ไม่ครบ / ลืมออก'],['21-reports-daily','ลงเวลารายวัน','วันนี้ใครมา สาย ลา นอกพื้นที่ ยังไม่ลงเวลา']]],
+ ['ใบงาน','var(--accent)',[['22-reports-job-month','ใบงานในเดือน','ตามสาขา ประเภทงาน หรือรายช่าง พร้อมแถบสถานะ'],['23-reports-job-open','ใบงานเปิดค้าง','งานค้างทั้งหมด ณ วันนี้ ค้างนาน ด่วน ไม่ขยับ เสร็จแต่ยังไม่ปิด'],['24-reports-job-close-time','เวลาปิดงานเฉลี่ย','เฉลี่ย / มัธยฐาน ปิดใน 1 วัน เกิน 7 วัน'],['25-reports-job-repeat','งานแก้ไขจุดเดิม','อัตราซ่อมซ้ำ กลับมาใน 7 วัน เครื่องที่ซ้ำบ่อย สงสัยซ้ำ'],['26-reports-job-claim','เคลมประกัน','งานเคลมตามสถานะ รุ่น จุดที่เสีย']]],
+ ['จองรถ','var(--yellow)',[['27-reports-car-booking','การจองรถ','ทุกการจองพร้อมรูปรถ ไม่ผูกใบงาน ยกเลิก / ไม่อนุมัติ'],['28-reports-car-use','อัตราการใช้รถ','% การใช้งานต่อคัน ระยะทาง วันที่ใช้รถมากสุด'],['29-reports-car-mileage','ไมล์ผิดปกติ','ไมล์ย้อน เกิน 2,000 กม. ไม่ต่อเนื่อง ไม่กรอกไมล์ เลยกำหนดคืน']]],
+ ['ค่าใช้จ่าย','var(--purple)',[['30-reports-exp-approved','ยอดอนุมัติ','ตารางทั้งปีเดือน × วัตถุประสงค์ ไล่สีตามยอด กดช่องดูใบ'],['31-reports-exp-slips','ใบขออนุมัติในเดือน','สถานะทุกใบ รอใคร กี่วัน เหตุผลที่ส่งกลับ'],['32-reports-exp-advances','เงินสำรองรอเคลียร์','เลยกำหนด ใกล้ถึงกำหนด เคลียร์ตรงเวลาหรือไม่'],['33-reports-exp-time','เวลาอนุมัติเฉลี่ย','เวลาแต่ละขั้น เวลาที่เสียไปกับการแก้ รายผู้อนุมัติ']]],
+];
+const LIB = [
+ ['บุคลากร',[['34-employee-levels','ระดับพนักงาน'],['35-expertises','ความเชี่ยวชาญ'],['36-talents','ความสามารถพิเศษ'],['37-leave-types','ประเภทลา'],['38-holidays','วันหยุดบริษัท (นำเข้า CSV ได้)']]],
+ ['สาขา / พื้นที่',[['39-branches','สาขา (พิกัด + รัศมีลงเวลา)'],['40-provinces','จังหวัด'],['41-work-locations','จุดปฏิบัติงานประจำ (แผนที่)']]],
+ ['ลูกค้า',[['42-affiliated-factories','โรงงานที่สังกัด'],['43-customer-grades','เกรดลูกค้า'],['44-credit-days','เงื่อนไขเครดิต'],['45-customer-statuses','สถานะลูกค้า']]],
+ ['เครื่องจักร',[['46-machine-types','ประเภทเครื่องจักร'],['47-machine-models','รุ่นเครื่องจักร'],['48-machine-options','อุปกรณ์เสริม'],['49-suppliers','ผู้ผลิต'],['50-traders','ผู้ขาย'],['51-warranty-conditions','เงื่อนไขประกัน'],['52-warranty-claim-statuses','สถานะเคลมประกัน']]],
+ ['งานบริการ',[['53-job-types','ประเภทงาน'],['54-work-natures','ลักษณะงาน'],['55-report-channels','ช่องทางรับแจ้ง'],['56-work-statuses','สถานะงาน'],['57-machine-assessments','ประเมินสภาพหน้างาน'],['58-job-values','ช่วงมูลค่างาน'],['59-points-of-work','จุดที่ทำงาน'],['60-fault-areas','บริเวณเหตุเสีย'],['61-signer-types','สถานะผู้ลงนาม'],['62-tools','เครื่องมือ'],['63-spare-parts','อะไหล่ (ราคา + ที่เก็บ)'],['64-problem-kb','คลังความรู้ปัญหา']]],
+ ['รถบริการ / เอกสาร',[['65-car-categories','ประเภทรถบริการ'],['66-trip-purposes','วัตถุประสงค์การใช้รถ'],['67-expense-purposes','วัตถุประสงค์เบิกค่าใช้จ่าย'],['68-reference-doc-types','ประเภทเอกสารอ้างอิง']]],
+];
+const SYS = [['69-approval-flows-car-booking','ขั้นตอนอนุมัติ (ตัวอย่าง: จองรถ)','เปิด / ปิด เพิ่มขั้น เลือกผู้อนุมัติแต่ละขั้นเป็นตำแหน่ง บุคคล หรือผู้จัดการสาขา'],['approval-flow-expense','ขั้นตอนอนุมัติค่าใช้จ่าย','2 ขั้น: ผู้จัดการสาขา → ผู้บริหาร'],['74-users','ผู้ใช้งาน','เพิ่มพนักงาน สาขา ตำแหน่ง ความชำนาญ รูปโปรไฟล์ ระบบส่งลิงก์ตั้งรหัสผ่านทางอีเมล ตั้งลายเซ็นให้ได้'],['75-roles','Role และ Permission','สร้างตำแหน่ง กำหนดขอบเขตข้อมูลและสิทธิ์รายข้อ'],['76-audit-logs','Audit Log','ประวัติการเพิ่ม / แก้ / ลบทุกอย่าง กรองตามโมดูล ผู้ใช้ วันที่'],['77-notifications','การแจ้งเตือน','ประวัติการแจ้งเตือนทั้งหมด กดไปหน้าที่เกี่ยวข้อง'],['78-settings','ตั้งค่าระบบ','ชื่อและโลโก้ หัวกระดาษเอกสาร เวลาเข้า-เลิกงาน พักเที่ยง เกณฑ์แจ้งเตือนงานค้าง PM และรถ'],['profile','โปรไฟล์และลายเซ็น','แก้ข้อมูลติดต่อ รูป เปลี่ยนรหัสผ่าน วาดหรืออัปโหลดลายเซ็นที่ใช้พิมพ์บนเอกสาร']];
+
+/* flows: [title, color, [[label, sub, target]], side notes] */
+const FLOWS = [
+ ['งานซ่อม / บริการลูกค้า','var(--accent)',[['ลูกค้าและเครื่องจักร','ข้อมูลลูกค้า ประกัน รอบ PM','p-cust'],['เปิดใบงาน','อาการ ความเร่งด่วน ประเภทงาน','p-job'],['บอร์ดช่าง','ดูช่างว่าง แล้วมอบงาน','p-board'],['งานของฉัน','ช่างได้รับแจ้งเตือน','p-myjobs'],['บันทึกผลหน้างาน','รูป อะไหล่ ลายเซ็นลูกค้า','p-job'],['หัวหน้ารีวิว','ผ่านปิดงาน / ส่งกลับแก้','p-job'],['พิมพ์ใบงาน','3 ฉบับ ลูกค้า / บริษัท / เคลม','docs']],['แจ้งเตือน PM → นัดได้ → เปิดใบงาน PM อัตโนมัติ','ใบงาน → จองรถไปหน้างาน','ใบงาน → OT / ค่าใช้จ่ายที่ผูกกับงาน','รายงานใบงาน 5 ฉบับ']],
+ ['ขออนุมัติค่าใช้จ่าย','var(--purple)',[['ยื่นขออนุมัติ','ผูกใบงานได้ แนบไฟล์','p-exp'],['ขั้น 1 ผู้จัดการสาขา','อนุมัติ / ขอข้อมูลเพิ่ม / ไม่อนุมัติ','p-inbox'],['ขั้น 2 ผู้บริหาร','อนุมัติครบ','p-inbox'],['พิมพ์ใบขออนุมัติ','ลายเซ็นครบทุกขั้น','docs'],['เคลียร์เงินสำรอง','บันทึกเมื่อได้ใบเสร็จ','p-exp']],['ขอข้อมูลเพิ่ม → ผู้ยื่นแก้แล้วยื่นใหม่ กลับไปขั้นเดิม','รายงานค่าใช้จ่าย 4 ฉบับ']],
+ ['จองรถ','var(--yellow)',[['บอร์ดจองรถ','ดูรถว่าง','p-carboard'],['จองรถ','งานซ่อมต้องผูกใบงาน','p-book'],['อนุมัติ','ผู้จัดการสาขา','p-inbox'],['รับรถ','เลขไมล์ออก','p-book'],['คืนรถ','เลขไมล์เข้า','p-book']],['ทะเบียนรถ → แจ้งเตือนภาษี / พ.ร.บ. / ประกัน / เช็กระยะ','รายงานจองรถ 3 ฉบับ (รวมไมล์ผิดปกติ)']],
+ ['ลงเวลา ลา OT','var(--green)',[['ลงเวลา','รูป + GPS','p-clock'],['ลงเวลาของฉัน','ปฏิทินรายเดือน','p-att'],['ขอแก้เวลา / ลา / OT','ยื่นจากหน้าของตัวเอง','p-leave'],['อนุมัติ','กล่องอนุมัติ','p-inbox'],['ระบบปรับให้อัตโนมัติ','ตัดวันลา / แก้เวลา','p-att'],['รายงานงานบุคคล','6 ฉบับ + Excel','s-rep']],['HR บันทึกแทนพนักงาน มีผลทันที','HR กำหนดสิทธิ์วันลา']],
+];
+
+const DOCS = [
+ ['job-print','ใบงานบริการ (สำเนาลูกค้า + ต้นฉบับบริษัท)','pdf/job-print.pdf',['สำเนาลูกค้า (สีฟ้า): รายละเอียดงานและอะไหล่พร้อมราคา ลายเซ็นลูกค้าและช่าง','ต้นฉบับบริษัท (สีเขียว): เพิ่มข้อมูลภายใน ประเมินหน้างาน มูลค่างาน รถที่จอง เลขไมล์ ลายเซ็นหัวหน้า','พิมพ์ทั้งชุดหรือทีละใบ เลขหน้าและเลขใบงานท้ายกระดาษ']],
+ ['job-print-claim','ใบงานบริการ ฉบับเคลมประกัน','pdf/job-print-claim.pdf',['สำเนาเคลม (สีส้ม): ข้อมูลประกันของเครื่อง อะไหล่ที่เคลม ไม่แสดงราคาขาย','ช่องลงนามช่าง หัวหน้า และผู้รับเรื่องของ Supplier','รวมในชุดพิมพ์อัตโนมัติเมื่อเครื่องยังอยู่ในประกัน']],
+ ['expense-print','ใบขออนุมัติค่าใช้จ่าย','pdf/expense-print.pdf',['จำนวนเงินพร้อมตัวหนังสือ วัตถุประสงค์ ผู้รับเงิน เอกสารอ้างอิง ใบงาน ไฟล์แนบ','เส้นทางอนุมัติครบทุกขั้น รวมครั้งที่ขอข้อมูลเพิ่มพร้อมข้อความ','การเคลียร์เงินสำรอง และช่องลงนามผู้ยื่น ผู้อนุมัติทุกขั้น ผู้รับเงิน']],
+];
+const ROLES = [
+ ['ผู้ดูแลระบบสูงสุด (MD)','ทุกสาขา','ทุกเมนู อนุมัติค่าใช้จ่ายขั้น 2 ตั้งค่าระบบ ผู้ใช้งานและสิทธิ์'],
+ ['ผู้จัดการสาขา','สาขาตัวเอง','แดชบอร์ด ใบงาน ลูกค้า PM บอร์ดช่าง จองรถ (รับ-คืนรถ) ค่าใช้จ่ายทั้งหมด รายงานทุกฉบับ ข้อมูลหลัก อนุมัติขั้น 1 ทุกเอกสาร'],
+ ['ฝ่ายบุคคล (HR)','ทุกสาขา','แดชบอร์ด งานบุคคล (สิทธิ์วันลา บันทึกแทน) รายงานงานบุคคล ใบงาน จองรถ ค่าใช้จ่าย'],
+ ['แอดมินประจำสาขา','สาขาตัวเอง','ดูใบงาน ลูกค้า PM บอร์ดจองรถ ทะเบียนรถ ข้อมูลหลัก (ดูอย่างเดียว) และงานของตัวเอง'],
+ ['เจ้าหน้าที่สำนักงาน','สาขาตัวเอง','เหมือนแอดมินประจำสาขา เซลส์ได้รับแจ้งเตือน PM ของลูกค้าตัวเอง'],
+ ['ช่าง','งานที่ได้รับมอบ','งานของฉัน บันทึกผลหน้างาน พิมพ์ใบงานของตัวเอง ลงเวลา ลา OT ขออนุมัติค่าใช้จ่าย'],
+ ['JDLink Champion','ทุกสาขา','ดูข้อมูลแบบเจ้าหน้าที่สำนักงาน ครอบคลุมทุกสาขา'],
+];
+const AFLOWS = [['จองรถ','ขั้น 1 ผู้จัดการสาขา','รถพร้อมให้รับ'],['ใบลา','ขั้น 1 ผู้จัดการสาขา','ตัดวันลาอัตโนมัติ'],['OT','ขั้น 1 ผู้จัดการสาขา','บันทึกเป็น OT ที่อนุมัติแล้ว'],['แก้ไขเวลาลงเวลา','ขั้น 1 ผู้จัดการสาขา','แก้เวลาในประวัติอัตโนมัติ'],['ขออนุมัติค่าใช้จ่าย','ขั้น 1 ผู้จัดการสาขา → ขั้น 2 ผู้บริหาร','พิมพ์ใบได้ เงินสำรองเข้าสู่การติดตามเคลียร์']];
+const NOTI = [['ใบงานถูกส่งรีวิว / ผ่าน / ส่งกลับ','หัวหน้าผู้รีวิว / ช่าง','ใบงานนั้น'],['ได้รับมอบงานจากบอร์ดช่าง','ช่าง','ใบงานนั้น'],['งานค้างไม่ขยับ (ทุกเช้า 08:00)','ผู้จัดการสาขา','แดชบอร์ดของสาขา'],['เครื่องถึงรอบ PM (ทุกเช้า 08:00)','ผู้จัดการสาขา และเซลส์ผู้ดูแลลูกค้า','แจ้งเตือน PM'],['เอกสารรถใกล้หมดอายุ / ถึงรอบเช็กระยะ (ทุกเช้า 08:00)','ผู้ดูแลรถ และผู้จัดการสาขา','หน้ารถคันนั้น'],['ตัวเลขข้างเมนู','ทุกคน (ตามสิทธิ์)','รออนุมัติ งานถูกส่งกลับ งานค้าง PM เอกสารรถ ใบที่ถูกขอข้อมูลเพิ่ม']];
+
+/* ---------- render ---------- */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const thumb = (img, cap) => `<button type="button" class="thumb" data-img="${I(img)}" data-cap="${esc(cap)}"><img src="${I(img)}" alt="ภาพหน้าจอ ${esc(cap)}" loading="lazy"><span class="zoom">ดูขนาดเต็ม</span></button>`;
+const pageCount = 79;
+document.getElementById('stats').innerHTML = [['var(--accent)', pageCount, 'หน้าในเมนู'], ['var(--red)', 18, 'รายงาน + Excel'], ['var(--purple)', 5, 'เอกสารที่มีขั้นตอนอนุมัติ'], ['var(--green)', 3, 'แบบฟอร์มพิมพ์ (ใบงาน 3 ฉบับ + ใบเบิก)'], ['var(--yellow)', 7, 'ตำแหน่งผู้ใช้งาน'], ['var(--tx5)', 35, 'ตารางข้อมูลหลัก']]
+  .map(([c, n, l]) => `<div class="stat" style="--c:${c}"><b>${n}</b><span>${l}</span></div>`).join('');
+document.getElementById('mods').innerHTML = MODS.map(([id, t, c, d]) => {
+  const sec = S.find(s => s.id === id); const cnt = sec ? sec.pages.length + ' หน้าหลัก' : id === 's-rep' ? '18 รายงาน' : id === 's-lib' ? '35 + 5 หน้า' : '8 หน้า';
+  return `<a class="mod" href="#${id}" style="--c:${c}"><span class="bar"></span><h3>${t}<small>${cnt}</small></h3><p>${d}</p></a>`}).join('');
+document.getElementById('flowlist').innerHTML = FLOWS.map(([t, c, nodes, side]) => `<div class="flow" style="--c:${c}"><h3><i></i>${t}</h3><div class="chain">${nodes.map(([l, s, to], i) => (i ? '<span class="arr" aria-hidden="true">→</span>' : '') + `<a class="node" href="#${to}"><b>${l}</b><span>${s}</span></a>`).join('')}</div><div class="side">${side.map(x => `<span>${x}</span>`).join('')}</div></div>`).join('');
+
+let html = '';
+for (const s of S) {
+  html += `<section class="block" id="${s.id}"><div class="sec-head"><div><div class="eyebrow">ส่วนที่ 3 · ${s.n}</div><h2>${s.t}</h2><p class="lead">${s.intro}</p></div></div><div class="pages">`;
+  for (const [id, name, path, img, who, does, links, extra] of s.pages) {
+    html += `<article class="pg" id="${id}">${thumb(img, name)}<div><div class="head"><h3>${name}</h3><span class="who">${who}</span><span class="path">${path}</span></div><ul>${does.map(d => `<li>${d}</li>`).join('')}</ul>${links && links.length ? `<div class="links"><span class="lb">เชื่อมไปที่</span>${links.map(([l, to]) => `<a href="#${to}">${l} →</a>`).join('')}</div>` : ''}${extra ? `<div class="extra">${extra.map(([im, cap]) => `<button type="button" data-img="${I(im)}" data-cap="${esc(cap)}"><img src="${I(im)}" alt="" loading="lazy"><span>${cap}</span></button>`).join('')}</div>` : ''}</div></article>`;
+  }
+  html += '</div></section>';
+}
+html += `<section class="block" id="s-rep"><div class="eyebrow">ส่วนที่ 3 · 3.6</div><h2>รายงาน</h2><p class="lead">รายงาน 18 ฉบับ แต่ละฉบับเป็นหน้าของตัวเองในเมนู เลือกเดือนย้อนหลังได้ 12 เดือน เลือกสาขา การ์ดด้านบนกดกรองได้ และส่งออก Excel ได้ทั้งเฉพาะเดือนและทั้งปี กดแถวในรายงานเพื่อเปิดเอกสารต้นทาง (ใบงาน การจองรถ ใบขออนุมัติ) รองรับข้อมูลหลักหมื่นรายการ ทดสอบแล้วเปิดได้ภายในครึ่งวินาที</p>`;
+for (const [g, c, items] of REP) html += `<div class="subhead" style="--c:${c}"><i></i>${g} (${items.length})</div><div class="grid">${items.map(([im, n, d]) => `<div class="gi">${thumb(im, 'รายงาน' + n)}<b>${n}</b><span>${d}</span></div>`).join('')}</div>`;
+html += '</section>';
+html += `<section class="block" id="s-lib"><div class="eyebrow">ส่วนที่ 3 · 3.7</div><h2>ข้อมูลหลัก และขั้นตอนอนุมัติ</h2><p class="lead">ตารางข้อมูลตั้งต้นที่ใช้ในเมนูเลือกทั่วทั้งระบบ เพิ่ม แก้ไข ปิดใช้งาน และเรียงลำดับได้เอง รหัสสร้างให้อัตโนมัติ ตารางที่มีผลกับการทำงาน เช่น ประเภทลา (สิทธิ์ต่อปี เพดานยกยอด) สาขา (รัศมีลงเวลา) ประเภทงาน (บังคับรูป / ลายเซ็น) วัตถุประสงค์การใช้รถ (บังคับผูกใบงาน)</p>`;
+for (const [g, items] of LIB) html += `<div class="subhead" style="--c:var(--tx5)"><i></i>${g} (${items.length})</div><div class="grid">${items.map(([im, n]) => `<div class="gi">${thumb(im, n)}<b>${n}</b></div>`).join('')}</div>`;
+html += '</section>';
+html += `<section class="block" id="s-sys"><div class="eyebrow">ส่วนที่ 3 · 3.8</div><h2>ผู้ใช้งาน สิทธิ์ และตั้งค่าระบบ</h2><p class="lead">สำหรับผู้ดูแลระบบ</p><div class="grid">${SYS.map(([im, n, d]) => `<div class="gi">${thumb(im, n)}<b>${n}</b><span>${d}</span></div>`).join('')}</div></section>`;
+document.getElementById('sections').innerHTML = html;
+
+document.getElementById('doclist').innerHTML = DOCS.map(([im, n, pdf, pts]) => `<div class="doc">${thumb(im, n)}<h3>${n}</h3><ul>${pts.map(p => `<li>${p}</li>`).join('')}</ul><a class="pdf" href="${pdf}" target="_blank" rel="noopener">ดูไฟล์ PDF ตัวอย่าง</a></div>`).join('');
+document.getElementById('roletbl').innerHTML = ROLES.map(r => `<tr><td><b>${r[0]}</b></td><td style="white-space:nowrap">${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+document.getElementById('flowtbl').innerHTML = AFLOWS.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+document.getElementById('notitbl').innerHTML = NOTI.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+
+/* toc */
+const TOC = [['top', '', 'ภาพรวม'], ['modules', '1', 'ระบบประกอบด้วยอะไร'], ['flows', '2', 'การทำงานเชื่อมกันอย่างไร'], ['s-work', '3', 'รายละเอียดทีละหน้า'], ...S.map(s => ['sub:' + s.id, s.n, s.t]), ['sub:s-rep', '3.6', 'รายงาน'], ['sub:s-lib', '3.7', 'ข้อมูลหลัก'], ['sub:s-sys', '3.8', 'ผู้ใช้งานและตั้งค่า'], ['docs', '4', 'เอกสารที่พิมพ์ได้'], ['roles', '5', 'สิทธิ์และขั้นตอนอนุมัติ'], ['notify', '6', 'การแจ้งเตือน']];
+document.getElementById('toc').innerHTML = TOC.map(([id, n, t]) => id.startsWith('sub:') ? `<div class="sub"><a href="#${id.slice(4)}">${t}</a></div>` : `<a href="#${id}"><span class="n">${n}</span>${t}</a>`).join('');
+
+/* lightbox */
+const lb = document.getElementById('lb'), lbimg = document.getElementById('lbimg'), lbcap = document.getElementById('lbcap');
+let last = null;
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-img]');
+  if (b) { last = b; lbimg.src = b.dataset.img; lbimg.alt = b.dataset.cap; lbcap.textContent = b.dataset.cap; lb.hidden = false; document.getElementById('lbx').focus(); return; }
+  if (e.target === lb || e.target.id === 'lbx') { lb.hidden = true; last && last.focus(); }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !lb.hidden) { lb.hidden = true; last && last.focus(); } });
+</script>
+</body>
+</html>
